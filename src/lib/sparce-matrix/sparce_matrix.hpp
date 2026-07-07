@@ -13,11 +13,16 @@ public:
 
   void set(int32_t x, int32_t y, T value) {
     if (value == DefaultValue) {
-      data_.erase({x, y});
+      size_ -= data_.erase({x, y});
     } else {
-      data_[{x, y}] = value;
+      auto [it, inserted] = data_.insert_or_assign({x, y}, value);
+      if (inserted) {
+        ++size_;
+      }
     }
   }
+
+  std::size_t size() const { return size_; }
 
   T get(int32_t x, int32_t y) const {
     auto it = data_.find({x, y});
@@ -72,4 +77,5 @@ public:
 
 private:
   std::unordered_map<std::pair<int32_t, int32_t>, T, pair_fast_hash> data_;
+  std::size_t size_ = 0;
 };

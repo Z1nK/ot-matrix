@@ -22,5 +22,7 @@ int main() {
   matrix[5][2] = 55;
   std::cout << "Matrix element at [5], [2]: " << matrix[5][2] << std::endl;
   std::cout << "Matrix element at (5, 2): " << matrix.get(5, 2) << std::endl;
+
+  std::cout << "Matrix size: " << matrix.size() << std::endl;
   return 0;
 }
