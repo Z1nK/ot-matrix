@@ -29,29 +29,47 @@ public:
 
   class ElementProxy {
   public:
-    ElementProxy(SparseMatrix2D& matrix, int32_t x)
-        : matrix_(matrix), x_(x) {}
+    ElementProxy(SparseMatrix2D& matrix, int32_t x, int32_t y) : matrix_(matrix), x_(x), y_(y) {}
 
-    T operator[](int32_t y) const {
-      return matrix_.get(x_, y);
+    operator T() const { return matrix_.get(x_, y_); }
+
+    ElementProxy& operator=(T value) {
+      matrix_.set(x_, y_, value);
+      return *this;
     }
 
-    T& operator[](int32_t y) {
-      return matrix_.data_[{x_, y}];
-    }
+  private:
+    SparseMatrix2D& matrix_;
+    int32_t x_;
+    int32_t y_;
+  };
+
+  class RowProxy {
+  public:
+    RowProxy(SparseMatrix2D& matrix, int32_t x) : matrix_(matrix), x_(x) {}
+
+    ElementProxy operator[](int32_t y) { return ElementProxy(matrix_, x_, y); }
 
   private:
     SparseMatrix2D& matrix_;
     int32_t x_;
   };
 
-  ElementProxy operator[](int32_t x) {
-    return ElementProxy(*this, x);
-  }
+  class ConstRowProxy {
+  public:
+    ConstRowProxy(const SparseMatrix2D& matrix, int32_t x) : matrix_(matrix), x_(x) {}
 
-  const T operator[](int32_t x) const = delete;
+    T operator[](int32_t y) const { return matrix_.get(x_, y); }
+
+  private:
+    const SparseMatrix2D& matrix_;
+    int32_t x_;
+  };
+
+  RowProxy operator[](int32_t x) { return RowProxy(*this, x); }
+
+  ConstRowProxy operator[](int32_t x) const { return ConstRowProxy(*this, x); }
 
 private:
   std::unordered_map<std::pair<int32_t, int32_t>, T, pair_fast_hash> data_;
-  friend class ElementProxy;
 };
