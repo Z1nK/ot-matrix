@@ -9,7 +9,7 @@ target_link_libraries(unit_tests PRIVATE
 	GTest::gtest
 	GTest::gtest_main
 
-	# log-reader::log-reader
+	matrix::matrix
 )
 
 include(GoogleTest)
