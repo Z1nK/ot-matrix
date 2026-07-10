@@ -75,6 +75,13 @@ public:
 
   ConstRowProxy operator[](int32_t x) const { return ConstRowProxy(*this, x); }
 
+  using const_iterator =
+      typename std::unordered_map<std::pair<int32_t, int32_t>, T, pair_fast_hash>::const_iterator;
+
+  const_iterator begin() const { return data_.begin(); }
+
+  const_iterator end() const { return data_.end(); }
+
 private:
   std::unordered_map<std::pair<int32_t, int32_t>, T, pair_fast_hash> data_;
   std::size_t size_ = 0;

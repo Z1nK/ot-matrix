@@ -39,5 +39,10 @@ int main() {
 
 
   std::cout << "Matrix size: " << matrix.size() << std::endl;
+
+  for (const auto& [pos, value] : matrix) {
+    std::cout << "(" << pos.first << ", " << pos.second << ") = " << value << std::endl;
+  }
+
   return 0;
 }
