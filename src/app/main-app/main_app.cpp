@@ -44,5 +44,11 @@ int main() {
     std::cout << pos.first << pos.second << value << std::endl;
   }
 
+  using Matrix = SparseMatrix2D<int, 0>;
+  Matrix a;
+  Matrix::RowProxy p(a, 0);
+  p[0] = 42;
+
+  std::cout << a[0][0] << std::endl;
   return 0;
 }
